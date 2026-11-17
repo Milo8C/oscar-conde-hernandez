@@ -32,18 +32,28 @@
             @if(auth()->user()->hasRole('Administrador'))
                 <flux:sidebar.group heading="Tienda">
                     <flux:sidebar.item icon="tag" href="{{ route('admin.products.index') }}">Productos</flux:sidebar.item>
-                    <flux:sidebar.item icon="shopping-bag" href="#">Pedidos</flux:sidebar.item>
-                    <flux:sidebar.item icon="users" href="#">Clientes</flux:sidebar.item>
+                    <flux:sidebar.item icon="shopping-bag" href="#" wire:navigate>
+                        Pedidos
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="users" href="{{ route('admin.costumers.index') }}" wire:navigate>
+                        Clientes
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
             @else
                 <flux:sidebar.group heading="Mi Cuenta">
-                    <flux:sidebar.item icon="shopping-bag" href="#">Mis Pedidos</flux:sidebar.item>
-                    <flux:sidebar.item icon="tag" href="{{ route('welcome') }}">Productos</flux:sidebar.item>
+                    <flux:sidebar.item icon="shopping-bag" href="#" wire:navigate>
+                        Mis Pedidos
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="tag" href="{{ route('welcome') }}" wire:navigate>
+                        Productos
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
             @endif
 
             <flux:sidebar.group heading="Sistema">
-                <flux:sidebar.item icon="cog-6-tooth" href="#">Configuración</flux:sidebar.item>
+                <flux:sidebar.item icon="cog-6-tooth" href="#" wire:navigate>
+                    Configuración
+                </flux:sidebar.item>
             </flux:sidebar.group>
         </flux:sidebar.nav>
 

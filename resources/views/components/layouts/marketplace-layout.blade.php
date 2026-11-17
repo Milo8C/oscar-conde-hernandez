@@ -35,7 +35,7 @@
         class="sticky top-0 z-40 border-b border-zinc-200/80 bg-white/95 backdrop-blur transition-colors dark:border-zinc-800 dark:bg-zinc-900/95">
         <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:gap-8 lg:px-8">
             <div class="flex items-center gap-3">
-                <a href="{{ route('welcome') }}" class="flex items-center gap-2 group transition">
+                <a href="{{ route('welcome') }}" class="flex items-center gap-2 group transition" wire:navigate>
                     @if(file_exists(public_path('images/large_boncommerce.webp')))
                         <img src="{{ asset('/images/large_boncommerce.webp') }}"
                             alt="{{ config('app.name', 'Marketplace') }}"
@@ -72,19 +72,7 @@
                 </div>
             </form>
             <div class="flex items-center gap-2 sm:gap-4">
-                @auth
-
-                    <button type="button" aria-label="Carrito de compras"
-                        class="relative rounded-full p-2 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white transition">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
-                        <span
-                            class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white">0</span>
-                    </button>
-                    <div class="hidden h-5 w-px bg-zinc-200 dark:bg-zinc-700 sm:block"></div>
-                    <div x-data x-model="$flux.appearance">
+                <div x-data x-model="$flux.appearance">
                         <flux:dropdown position="bottom" align="start">
                             <flux:button icon="sun" variant="subtle" aria-label="Cambiar tema" />
 
@@ -103,8 +91,39 @@
                             </flux:menu>
                         </flux:dropdown>
                     </div>
+                @auth
 
-                    <a href="{{ route('dashboard') }}"
+                    <button type="button" aria-label="Carrito de compras"
+                        class="relative rounded-full p-2 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white transition">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                        <span
+                            class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white">0</span>
+                    </button>
+                    <div class="hidden h-5 w-px bg-zinc-200 dark:bg-zinc-700 sm:block"></div>
+                    {{-- <div x-data x-model="$flux.appearance">
+                        <flux:dropdown position="bottom" align="start">
+                            <flux:button icon="sun" variant="subtle" aria-label="Cambiar tema" />
+
+                            <flux:menu>
+                                <flux:menu.item x-on:click="$flux.appearance = 'light'">
+                                    Claro
+                                </flux:menu.item>
+
+                                <flux:menu.item x-on:click="$flux.appearance = 'dark'">
+                                    Oscuro
+                                </flux:menu.item>
+
+                                <flux:menu.item x-on:click="$flux.appearance = 'system'">
+                                    Usar sistema
+                                </flux:menu.item>
+                            </flux:menu>
+                        </flux:dropdown>
+                    </div> --}}
+
+                    <a href="{{ route('dashboard') }}" wire:navigate
                         class="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white py-1.5 pl-2 pr-3 text-xs font-semibold text-zinc-700 shadow-sm transition hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700">
                         <span
                             class="flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 font-bold text-blue-700 dark:bg-blue-900 dark:text-blue-200">
@@ -134,7 +153,7 @@
         <nav class="border-t border-zinc-100 bg-zinc-50/50 dark:border-zinc-800/80 dark:bg-zinc-900/50">
             <div
                 class="mx-auto flex max-w-7xl items-center gap-6 overflow-x-auto px-4 py-2 text-xs font-medium text-zinc-600 no-scrollbar sm:px-6 lg:px-8 dark:text-zinc-400">
-                <a href="{{ route('welcome') }}"
+                <a href="{{ route('welcome') }}" wire:navigate
                     class="inline-flex items-center gap-1.5 font-semibold text-blue-600 dark:text-blue-400">
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

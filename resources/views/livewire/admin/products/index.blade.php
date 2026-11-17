@@ -2,8 +2,7 @@
     @product-created.window="createOpen = false; flashMessage = $event.detail.message; setTimeout(() => flashMessage = '', 3500)"
     @product-deleted.window="flashMessage = 'Producto eliminado con éxito'; setTimeout(() => flashMessage = '', 3500)"
     class="space-y-6">
-
-    <!-- Header y Acciones Principales -->
+    
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <div class="flex items-center gap-3">
@@ -29,13 +28,23 @@
             </flux:button>
         </div>
     </div>
-
-    <!-- Contenedor de la Tabla con bordes pulidos y sombras suaves -->
     <div
         class="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
-        <flux:table :paginate="$products">
-            <flux:table.columns>
-                <flux:table.column class="w-80">Producto</flux:table.column>
+        <div class="flex items-center justify-between border-b border-zinc-200 bg-zinc-50 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
+            <flux:input  wire:model.live.debounce.500ms="search" type="search" placeholder="Buscar producto..." icon="magnifying-glass"
+                class="max-w-md rounded-t-xl bg-zinc-50 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-primary-500 focus:ring-primary-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-500" />
+            <flux:select wire:model.live="category_id" placeholder="Filtrar por categoría" icon="tag"
+                class="max-w-xs rounded-t-xl bg-zinc-50 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-primary-500 focus:ring-primary-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-500">
+                <option value="">Todas las categorías</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </flux:select>
+        </div>
+        
+        <flux:table :paginate="$products" class="px-2">
+            <flux:table.columns class="">
+                <flux:table.column class="w-80 mx-2 "> Producto</flux:table.column>
                 <flux:table.column>Descripción</flux:table.column>
                 <flux:table.column class="w-32">Stock</flux:table.column>
                 <flux:table.column class="w-36">Precio (MXN)</flux:table.column>
@@ -49,7 +58,7 @@
                         class="transition-colors hover:bg-zinc-50/60 dark:hover:bg-zinc-800/40">
                         <!-- Producto (Miniatura + Nombre) -->
                         <flux:table.cell>
-                            <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-3 px-2">
                                 @if ($product->image_url)
                                     <img class="size-11 shrink-0 rounded-lg object-cover ring-1 ring-zinc-200/80 dark:ring-zinc-700/80"
                                         src="{{ $product->image_url }}" alt="{{ $product->name }}">
@@ -71,16 +80,14 @@
                                 </div>
                             </div>
                         </flux:table.cell>
-
-                        <!-- Descripción corta -->
+                        
                         <flux:table.cell>
                             <span class="line-clamp-2 text-xs text-zinc-600 dark:text-zinc-400"
                                 title="{{ $product->description_short }}">
                                 {{ $product->description_short ?: '—' }}
                             </span>
                         </flux:table.cell>
-
-                        <!-- Stock con badges semánticos -->
+                        
                         <flux:table.cell>
                             @if ($product->stock === 0)
                                 <span
@@ -103,7 +110,6 @@
                             @endif
                         </flux:table.cell>
 
-                        <!-- Precio MXN y referencia USD si existe -->
                         <flux:table.cell>
                             <div>
                                 <span class="font-semibold text-zinc-900 dark:text-zinc-100">
@@ -116,8 +122,7 @@
                                 @endif
                             </div>
                         </flux:table.cell>
-
-                        <!-- Estado Activo / Inactivo -->
+                        
                         <flux:table.cell>
                             @if ($product->is_active)
                                 <span
@@ -133,8 +138,7 @@
                                 </span>
                             @endif
                         </flux:table.cell>
-
-                        <!-- Acciones -->
+                        
                         <flux:table.cell class="">
                             <div class="flex items-center justify-end gap-1">
                                 <flux:button variant="ghost" size="sm"
@@ -146,6 +150,9 @@
                                     action="delete" :arguments="[$product->id]" confirm-text="Sí, eliminar">
                                     <flux:icon name="trash" class="size-4 text-red-500 hover:text-red-600 transition" />
                                 </x-alert-confirm>
+                                <flux:button variant="ghost" size="sm" icon="power"
+                                    :class="$product->is_active ? 'text-emerald-500 hover:text-emerald-600' : 'text-zinc-400 hover:text-zinc-500'"
+                                    wire:click="toggleActive({{ $product->id }})" />
                             </div>
                         </flux:table.cell>
                     </flux:table.row>
@@ -174,8 +181,7 @@
             </flux:table.rows>
         </flux:table>
     </div>
-
-    <!-- Modal para Crear Producto con Backdrop Mejorado -->
+    
     <div x-show="createOpen" x-cloak x-transition:enter="transition ease-out duration-200"
         x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
         x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"

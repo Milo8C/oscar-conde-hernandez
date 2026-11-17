@@ -52,4 +52,9 @@ class Product extends Model
         //     $product->slug = $slug;
         // });
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

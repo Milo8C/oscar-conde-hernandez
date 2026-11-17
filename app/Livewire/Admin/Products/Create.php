@@ -30,6 +30,7 @@ class Create extends Component
 
     public function save()
     {
+        $this->authorize('create', Product::class);
         $data = $this->form->validate();
 
         if ($this->form->image_url) {

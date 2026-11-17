@@ -44,6 +44,7 @@ class Edit extends Component
 
     public function save()
     {
+        $this->authorize('update', $this->product);
         $data = $this->form->validate();
 
         if ($this->form->image_url) {
