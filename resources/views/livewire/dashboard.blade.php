@@ -1,0 +1,101 @@
+<div>
+    <div clas="my-5">        
+            <p class="text-sm text-zinc-500 dark:text-zinc-400">Panel de administración</p>
+            <h1 class="mt-1 text-2xl font-semibold text-zinc-900 dark:text-white">
+                Hola, {{ auth()->user()->name }}
+            </h1>        
+    </div>
+    @if(auth()->user()->hasRole('Administrador'))
+    <div class="space-y-6 mt-4">
+        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            @foreach ($stats as $stat)
+                <div class="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+                    <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                        {{ $stat['label'] }}
+                    </p>
+                    <p class="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">
+                        {{ $stat['value'] }}
+                    </p>
+                    <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+                        {{ $stat['detail'] }}
+                    </p>
+                </div>
+            @endforeach
+        </div>
+
+        <div class="grid gap-6 xl:grid-cols-3">
+            <section
+                class="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-900 xl:col-span-2">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-base font-semibold text-zinc-900 dark:text-white">
+                            Actividad Hoy
+                        </h2>
+                        <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                            Aquí aparecerán los movimientos de tu tienda.
+                        </p>
+                    </div>       
+                </div>
+
+                <div
+                    class="mt-6 rounded-lg border border-dashed border-zinc-300 px-4 py-10 text-center dark:border-zinc-700">
+                    <p class="font-medium text-zinc-700 dark:text-zinc-300">
+                        Todavía no hay actividad
+                    </p>
+                    <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                        Cuando registres pedidos o productos, verás aquí las novedades.
+                    </p>
+                </div>
+            </section>
+
+            <section
+                class="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+                <h2 class="text-base font-semibold text-zinc-900 dark:text-white">
+                    Accesos rápidos
+                </h2>
+
+                <div class="mt-4 space-y-3">
+                    <a href="{{ route('admin.products.index') }}" wire:navigate
+                        class="block rounded-lg border border-zinc-200 p-4 transition hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800">
+                        <span class="font-medium text-zinc-900 dark:text-white">Productos</span>
+                        <span class="mt-1 block text-sm text-zinc-500 dark:text-zinc-400">Ver productos</span>
+                    </a>
+
+                    <a href="{{  route('orders.index') }}" wire:navigate
+                        class="block rounded-lg border border-zinc-200 p-4 transition hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800">
+                        <span class="font-medium text-zinc-900 dark:text-white">Ver pedidos</span>
+                        <span class="mt-1 block text-sm text-zinc-500 dark:text-zinc-400">Revisar compras
+                            recientes</span>
+                    </a>
+
+                    <a href="{{ route('profile') }}" wire:navigate
+                        class="block rounded-lg border border-zinc-200 p-4 transition hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800">
+                        <span class="font-medium text-zinc-900 dark:text-white">Mi perfil</span>
+                        <span class="mt-1 block text-sm text-zinc-500 dark:text-zinc-400">Actualizar tus datos</span>
+                    </a>
+                </div>
+            </section>
+        </div>
+
+    </div>
+    @else    
+         <div class="space-y-6 mt-4">
+        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            @foreach ($stats as $stat)
+                <div class="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+                    <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                        {{ $stat['label'] }}
+                    </p>
+                    <p class="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">
+                        {{ $stat['value'] }}
+                    </p>
+                    <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+                        {{ $stat['detail'] }}
+                    </p>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    
+    @endif
+</div>

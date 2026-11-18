@@ -34,8 +34,8 @@
                 <flux:sidebar.group heading="Tienda">
                     <flux:sidebar.item icon="tag"
                         class="{{ request()->routeIs('admin.products.index') ? '!bg-neutral-500 !text-zinc-100' : '' }}"
-                        href="{{ route('admin.products.index') }}">Productos</flux:sidebar.item>
-                    <flux:sidebar.item icon="shopping-bag" href="#" wire:navigate>
+                        href="{{ route('admin.products.index') }}" wire:navigate >Productos</flux:sidebar.item>
+                    <flux:sidebar.item icon="shopping-bag" href="{{ route('orders.index') }}" wire:navigate>
                         Pedidos
                     </flux:sidebar.item>
                     <flux:sidebar.item
@@ -43,10 +43,15 @@
                         icon="users" href="{{ route('admin.costumers.index') }}" wire:navigate>
                         Clientes
                     </flux:sidebar.item>
+                     <flux:sidebar.item
+                        class="{{ request()->routeIs('admin.analytics.index') ? '!bg-neutral-500 !text-zinc-100' : '' }}"
+                        icon="chart-bar" href="{{ route('admin.analytics.index') }}" wire:navigate>
+                        Estadisticas
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
             @else
                 <flux:sidebar.group heading="Mi Cuenta">
-                    <flux:sidebar.item icon="shopping-bag" href="#" wire:navigate>
+                    <flux:sidebar.item icon="shopping-bag" href="{{ route('orders.index') }}" wire:navigate>
                         Mis Pedidos
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="tag" href="{{ route('welcome') }}" wire:navigate>
@@ -129,14 +134,14 @@
             </flux:dropdown>
         </flux:navbar>
 
-        <flux:navbar scrollable>
+        {{-- <flux:navbar scrollable>
             <flux:navbar.item href="{{ route('dashboard') }}" :current="request()->routeIs('dashboard')">
                 Panel
             </flux:navbar.item>
             <flux:navbar.item href="#">Pedidos</flux:navbar.item>
             <flux:navbar.item href="#">Catálogo</flux:navbar.item>
             <flux:navbar.item href="#">Configuración</flux:navbar.item>
-        </flux:navbar>
+        </flux:navbar> --}}
 
         <flux:spacer />
 
@@ -145,7 +150,7 @@
     <flux:main class="lg:ms-0 lg:mt-0">
         {{ $slot }}
     </flux:main>
-
+    <x-toast />
     @fluxScripts
 </body>
 

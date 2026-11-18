@@ -57,18 +57,18 @@
             <form action="{{ route('welcome') }}" method="GET" class="relative flex-1 max-w-2xl">
                 <div class="relative flex items-center">
                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-zinc-400">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        {{-- <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
+                        </svg> --}}
                     </div>
-                    <input type="search" name="search" value="{{ request('search') }}"
+                    {{-- <input type="search" name="search" value="{{ request('search') }}"
                         placeholder="Buscar entre miles de productos, marcas y categorías..."
                         class="w-full rounded-full border border-zinc-300 bg-zinc-100/70 py-2.5 pl-11 pr-24 text-sm text-zinc-900 placeholder-zinc-500 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-white dark:placeholder-zinc-400 dark:focus:border-blue-400 dark:focus:bg-zinc-900">
                     <button type="submit"
                         class="absolute right-1.5 inline-flex items-center rounded-full bg-blue-600 px-4 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-900">
                         Buscar
-                    </button>
+                    </button> --}}
                 </div>
             </form>
             <div x-data="{ cartCount: {{ collect(session('cart', []))->sum('quantity') }} }"
@@ -242,6 +242,7 @@
                 </div>
             </div>
         </div>
+        <x-toast />
     </footer>
     @fluxScripts
 </body>

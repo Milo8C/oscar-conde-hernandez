@@ -45,7 +45,8 @@ class Checkout extends Component
         $cart = session()->get('cart', []);
         unset($cart[$productId]);
         session()->put('cart', $cart);
-        $this->dispatch('cart-updated', message: 'Producto eliminado del carrito', type: 'success', cartCount: collect($cart)->sum('quantity'));
+        $this->dispatch('cart-updated', cartCount: collect($cart)->sum('quantity'));
+        $this->dispatch('toast', message: 'Producto eliminado del carrito', type: 'success');
     }
 
     public function decreaseQuantity(int $productId)
@@ -58,7 +59,8 @@ class Checkout extends Component
                 unset($cart[$productId]);
             }
             session()->put('cart', $cart);
-            $this->dispatch('cart-updated', message: 'Producto actualizado en el carrito', type: 'success', cartCount: collect($cart)->sum('quantity'));
+            $this->dispatch('cart-updated', cartCount: collect($cart)->sum('quantity'));
+            $this->dispatch('toast', message: 'Producto actualizado en el carrito', type: 'success');
         }
     }
 
@@ -68,14 +70,16 @@ class Checkout extends Component
         if (isset($cart[$productId])) {
             $cart[$productId]['quantity']++;
             session()->put('cart', $cart);
-            $this->dispatch('cart-updated', message: 'Producto actualizado en el carrito', type: 'success', cartCount: collect($cart)->sum('quantity'));
+            $this->dispatch('cart-updated', cartCount: collect($cart)->sum('quantity'));
+            $this->dispatch('toast', message: 'Producto actualizado en el carrito', type: 'success');
         }
     }
 
     public function clearCart()
     {
         session()->forget('cart');
-        $this->dispatch('cart-updated', message: 'Carrito vaciado', type: 'success', cartCount: 0);
+        $this->dispatch('cart-updated', cartCount: 0);
+        $this->dispatch('toast', message: 'Carrito vaciado', type: 'success');
     }
 
     public function pay()
@@ -83,14 +87,17 @@ class Checkout extends Component
 
         $cart = session()->get('cart', []);
         if (empty($cart)) {
-            $this->dispatch('cart-updated', message: 'El carrito está vacío.', type: 'error', cartCount: 0);
+            $this->dispatch('cart-updated', cartCount: 0);
+            $this->dispatch('toast', message: 'El carrito está vacío.', type: 'error');
             return;
         }
 
         $secret = config('services.stripe.secret');
 
         if (empty($secret)) {
-            $this->dispatch('cart-updated', message: 'Stripe secret no configurado.', type: 'error');
+            $this->dispatch('cart-updated');
+            $this->dispatch('toast', message: 'Stripe secret no configurado.', type: 'error');
+
             return;
         }
         $stripe = new \Stripe\StripeClient($secret);

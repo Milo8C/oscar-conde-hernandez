@@ -9,7 +9,12 @@ class BanxicoService
 {
     public function datoOportuno(string $idSerie): array
     {
-        return Cache::remember("banxico:serie:{$idSerie}", now()->addHours(12), function () use ($idSerie) {
+
+        $expira = now()->hour >= 12 && now()->minute >= 15
+            ? now()->addDay()->setTime(12, 15, 0)
+            : now()->setTime(12, 15, 0);
+
+        return Cache::remember("banxico:serie:{$idSerie}", $expira, function () use ($idSerie) {
             $response = Http::acceptJson()
                 ->withHeaders([
                     'Bmx-Token' => config('services.banxico.key'),
@@ -33,5 +38,14 @@ class BanxicoService
             'tipo_cambio' => $tipoCambio,
             'usd' => round($pesos / $tipoCambio, 2),
         ];
+    }
+
+    public function obtenerTipoCambioActual(): float
+    {
+        $response = Http::acceptJson()
+            ->withHeaders(['Bmx-Token' => config('services.banxico.key')])
+            ->get("https://www.banxico.org.mx/SieAPIRest/service/v1/series/SF43718/datos/oportuno");
+        $response->throw();
+        return (float) ($response->json('bmx.series.0.datos.0.dato') ?? 0);
     }
 }

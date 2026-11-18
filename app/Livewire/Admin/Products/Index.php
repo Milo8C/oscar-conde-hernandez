@@ -20,14 +20,8 @@ class Index extends Component
     public function render()
     {
         $categories = Category::orderBy('name', 'asc')->get();
-        // $products = Product::where('is_active', true)
-        //     ->where(function ($query) {
-        //         $query->whereDate('validity_at', '>', now()->toDateString())
-        //             ->orWhereNull('validity_at');
-        //     })
-        //     ->latest()->paginate(9);
 
-        $products = Product::when($this->search, function ($query) {
+        $products = Product::with('category')->when($this->search, function ($query) {
             $query->where('name', 'like', "%{$this->search}%");
         })->when($this->category_id, function ($query) {
             $query->where('category_id', $this->category_id);

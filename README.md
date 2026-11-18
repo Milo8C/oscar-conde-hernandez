@@ -21,39 +21,104 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## 🚀 Instalación y Puesta en Marcha
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Sigue estos pasos para clonar y configurar el proyecto localmente.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Variables de entorno
 
-## Laravel Sponsors
+Copia el archivo de ejemplo y configura tus credenciales:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+cp .env.example .env
+```
+---
 
-### Premium Partners
+### 2. Instalar dependencias de PHP (Composer)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+**En Windows:** 
+```bash
+composer update --ignore-platform-reqs
+```
 
-## Contributing
+**En Linux / macOS:**
+```bash
+composer update
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+### 3. Generar la clave de la aplicación
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan key:generate
+```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 4. Instalar y compilar dependencias de Frontend
 
-## License
+```bash
+npm install
+npm run build
+# o para desarrollo continuo:
+npm run dev
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+### 5. Base de datos y datos de prueba
+
+Ejecuta las migraciones y llena la base de datos con los datos iniciales y usuarios de prueba:
+
+```bash
+php artisan migrate --seed
+# o individualmente:
+php artisan migrate
+php artisan db:seed --class=DatabaseSeeder
+```
+
+---
+
+### 6. Procesamiento de Colas (Queues)
+
+Para procesar conversiones de divisas y tareas en segundo plano:
+
+**En Windows:**
+```bash
+php artisan queue:work
+```
+
+**En Linux / macOS:**
+```bash
+php artisan horizon
+# o: php artisan queue:work
+```
+
+---
+
+### 7. Tareas Programadas (Scheduler / Cron)
+
+Para la actualización automática de precios en dólares según Banxico:
+
+- **En desarrollo local:**
+  ```bash
+  php artisan schedule:work
+  ```
+
+- **En servidor de producción (Linux Crontab):**
+  Agrega esta línea con `crontab -e`:
+  ```bash
+  * cd/* * * *var/www/oscar-conde-hernandez && php artisan schedule:run >> /dev/null 2>&1
+  ```
+
+---
+
+## 👤 Credenciales de Acceso
+
+| Rol | Correo Electrónico | Contraseña |
+| :--- | :--- | :--- |
+| **Administrador** | `admin@ecommerce.test` | `demo2089` |
+
+
+

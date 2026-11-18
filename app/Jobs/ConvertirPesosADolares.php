@@ -28,7 +28,6 @@ class ConvertirPesosADolares implements ShouldQueue
      */
     public function handle(BanxicoService $banxicoService): void
     {
-        //            
         $key = "conversion:{$this->conversionId}";
 
         try {

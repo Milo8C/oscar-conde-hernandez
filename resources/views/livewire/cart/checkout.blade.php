@@ -174,5 +174,5 @@
         </div>
     @endif
 
-    <x-toast message-expression="flashMessage" type="type" />
+    {{-- <x-toast message-expression="flashMessage" type="type" /> --}}
 </div>

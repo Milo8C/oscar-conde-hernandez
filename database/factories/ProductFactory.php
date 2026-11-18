@@ -33,6 +33,7 @@ class ProductFactory extends Factory
             'price_usd' => $price_us,
             'stock' => $this->faker->numberBetween(0, 100),
             'is_active' => $this->faker->boolean,
+            'sku' => $this->faker->unique()->numerify('SKU-#####'),
         ];
     }
 }

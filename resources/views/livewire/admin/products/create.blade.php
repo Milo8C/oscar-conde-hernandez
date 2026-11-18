@@ -79,7 +79,6 @@
                             @error('form.price_mx')
                                 <flux:text class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</flux:text>
                             @enderror
-
                             <div class="mt-2.5">
                                 <flux:button type="button" variant="subtle" size="sm" icon="arrow-path"
                                     class="w-full justify-center" wire:click="convertirPrecio"

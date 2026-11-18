@@ -55,7 +55,8 @@ class Edit extends Component
 
         $this->product->update($data);
 
-        $this->dispatch('product-edited', message: 'Producto actualizado exitosamente');
+        $this->dispatch('product-edited');
+        $this->dispatch('toast', message: 'Producto actualizado exitosamente');
     }
 
     #[On('product-edited')]

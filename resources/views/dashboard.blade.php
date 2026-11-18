@@ -1,14 +1,12 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div>
+    <div clas="my-5">        
             <p class="text-sm text-zinc-500 dark:text-zinc-400">Panel de administración</p>
             <h1 class="mt-1 text-2xl font-semibold text-zinc-900 dark:text-white">
                 Hola, {{ auth()->user()->name }}
-            </h1>
-        </div>
-    </x-slot>
-
-    <div class="space-y-6">
+            </h1>        
+    </div>
+    @if(auth()->user()->hasRole('Administrador'))
+    <div class="space-y-6 mt-4">
         <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             @foreach ([
                     ['label' => 'Ventas de hoy', 'value' => '$0.00', 'detail' => 'Sin ventas registradas'],
@@ -90,4 +88,11 @@
         </div>
 
     </div>
+    @else    
+    <div class="space-y-6 mt-4">
+            <div>Pedidos </div>
+            <div>Productos</div>
+    </div>
+    
+    @endif
 </x-app-layout>

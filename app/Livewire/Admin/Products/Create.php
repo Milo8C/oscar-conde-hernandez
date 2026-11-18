@@ -17,10 +17,10 @@ class Create extends Component
     public ProductForm $form;
     use WithFileUploads, HasPriceConversion;
 
-    public ?string $conversionId = null;
-    public bool $isConverting = false;
-    public int $conversionStartedAt = 0;
-    public ?string $conversionError = null;
+    // public ?string $conversionId = null;
+    // public bool $isConverting = false;
+    // public int $conversionStartedAt = 0;
+    // public ?string $conversionError = null;
 
     public function render()
     {
@@ -40,7 +40,8 @@ class Create extends Component
         Product::create($data);
         session()->flash('success', 'Producto creado exitosamente');
         $this->form->reset();
-        $this->dispatch('product-created', message: 'Producto creado exitosamente');
+        $this->dispatch('product-created');
+        $this->dispatch('toast', message: 'Producto creado con éxito', type: 'success');
     }
 
     public function updated($propertyName)
