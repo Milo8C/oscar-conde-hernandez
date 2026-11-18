@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->unsigned()->nullable();
-            $table->integer('phone')->length(10)->nullable();
+            $table->bigInteger('phone')->length(10)->nullable();
             $table->string('curp')->length(18)->nullable();
             $table->string('rfc')->length(13)->nullable();
             $table->timestamps();

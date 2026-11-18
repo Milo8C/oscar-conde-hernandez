@@ -25,17 +25,22 @@
         <flux:sidebar.nav>
             <flux:sidebar.group heading="Administración">
                 <flux:sidebar.item icon="squares-2x2" href="{{ route('dashboard') }}"
+                    class="{{ request()->routeIs('dashboard') ? '!bg-neutral-500 !text-zinc-100' : '' }}"
                     :current="request()->routeIs('dashboard')">
                     Resumen
                 </flux:sidebar.item>
             </flux:sidebar.group>
             @if(auth()->user()->hasRole('Administrador'))
                 <flux:sidebar.group heading="Tienda">
-                    <flux:sidebar.item icon="tag" href="{{ route('admin.products.index') }}">Productos</flux:sidebar.item>
+                    <flux:sidebar.item icon="tag"
+                        class="{{ request()->routeIs('admin.products.index') ? '!bg-neutral-500 !text-zinc-100' : '' }}"
+                        href="{{ route('admin.products.index') }}">Productos</flux:sidebar.item>
                     <flux:sidebar.item icon="shopping-bag" href="#" wire:navigate>
                         Pedidos
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="users" href="{{ route('admin.costumers.index') }}" wire:navigate>
+                    <flux:sidebar.item
+                        class="{{ request()->routeIs('admin.costumers.index') ? '!bg-neutral-500 !text-zinc-100' : '' }}"
+                        icon="users" href="{{ route('admin.costumers.index') }}" wire:navigate>
                         Clientes
                     </flux:sidebar.item>
                 </flux:sidebar.group>
@@ -51,7 +56,9 @@
             @endif
 
             <flux:sidebar.group heading="Sistema">
-                <flux:sidebar.item icon="cog-6-tooth" href="#" wire:navigate>
+                <flux:sidebar.item icon="cog-6-tooth"
+                    class="{{ request()->routeIs('profile') ? '!bg-neutral-500 !text-zinc-100' : '' }}"
+                    href="{{ route('profile') }}" wire:navigate>
                     Configuración
                 </flux:sidebar.item>
             </flux:sidebar.group>

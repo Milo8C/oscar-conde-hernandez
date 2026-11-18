@@ -39,7 +39,7 @@ new #[Layout('layouts.guest')]
 
         $customer = Customer::create([
             'user_id' => $user->id,
-            'telefono' => $this->telefono,
+            'phone' => $this->telefono,
             'curp' => $this->curp,
             'rfc' => $this->rfc,
         ]);

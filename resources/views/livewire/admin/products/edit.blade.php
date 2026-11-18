@@ -2,8 +2,6 @@
     @product-edited.window="flashMessage = $event.detail.message; setTimeout(() => flashMessage = '', 3500)"
     @product-deleted.window="flashMessage = 'Producto eliminado con éxito'; setTimeout(() => flashMessage = '', 3500)"
     class="space-y-6">
-
-    <!-- Encabezado de página completa -->
     <div
         class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-zinc-200 pb-5 dark:border-zinc-800">
         <div class="flex items-center gap-4">
@@ -50,15 +48,10 @@
             </flux:button>
         </div>
     </div>
-
-    <!-- Formulario Principal -->
     <form id="product-edit-form" wire:submit="save" class="space-y-6">
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
 
-            <!-- Columna Izquierda: Información de Contenido y Precios (8 cols) -->
             <div class="space-y-6 lg:col-span-8">
-
-                <!-- Tarjeta: Información General -->
                 <div
                     class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900/60">
                     <h3 class="mb-4 flex items-center gap-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
@@ -107,8 +100,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Tarjeta: Precios y Conversión en Vivo -->
                 <div
                     class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900/60">
                     <div class="mb-4 flex items-center justify-between">
@@ -123,7 +114,6 @@
                     </div>
 
                     <div class="grid grid-cols-1 items-start gap-4 sm:grid-cols-2">
-                        <!-- Precio MXN -->
                         <div>
                             <flux:input type="number" min="0" step="0.01" label="Precio (MXN)" placeholder="0.00"
                                 wire:model.live="form.price_mx" />
@@ -157,8 +147,6 @@
                                 </div>
                             @endif
                         </div>
-
-                        <!-- Precio USD -->
                         <div>
                             <flux:input type="number" readonly min="0" step="0.01" label="Precio estimado (USD)"
                                 placeholder="0.00" wire:model="form.price_usd"
@@ -173,11 +161,7 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Columna Derecha: Estado, Categoría, Inventario y Multimedia (4 cols) -->
             <div class="space-y-6 lg:col-span-4">
-
-                <!-- Tarjeta: Estado y Organización -->
                 <div
                     class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900/60">
                     <h3 class="mb-4 flex items-center gap-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
@@ -186,7 +170,6 @@
                     </h3>
 
                     <div class="space-y-4">
-                        <!-- Toggle de Estado Activo -->
                         <div
                             class="flex items-center justify-between rounded-lg border border-zinc-200 bg-zinc-50/60 p-3 dark:border-zinc-800 dark:bg-zinc-800/40">
                             <div>
@@ -195,8 +178,13 @@
                             </div>
                             <flux:checkbox wire:model="form.is_active" />
                         </div>
-
-                        <!-- Categoría -->
+                        <div>
+                            <flux:input type="text" label="SKU" placeholder="SKU"
+                                wire:model.live.debounce.500ms="form.sku" />
+                            @error('form.sku')
+                                <flux:text class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</flux:text>
+                            @enderror
+                        </div>
                         <div>
                             <flux:select label="Categoría" wire:model="form.category_id">
                                 <option value="">Selecciona una categoría</option>
@@ -208,8 +196,6 @@
                                 <flux:text class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</flux:text>
                             @enderror
                         </div>
-
-                        <!-- Stock Disponible -->
                         <div>
                             <flux:input type="number" min="0" label="Stock en almacén" placeholder="0"
                                 wire:model="form.stock" />
@@ -217,8 +203,6 @@
                                 <flux:text class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</flux:text>
                             @enderror
                         </div>
-
-                        <!-- Vigencia -->
                         <div>
                             <flux:input type="datetime-local" label="Vigente hasta (opcional)"
                                 wire:model="form.validity_at" />
@@ -228,18 +212,13 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Tarjeta: Imagen del Producto -->
                 <div
                     class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900/60">
                     <h3 class="mb-3 flex items-center gap-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                         <flux:icon name="photo" class="size-4 text-amber-500" />
                         Imagen del producto
                     </h3>
-
-                    <!-- Imagen actual o nueva preview -->
                     @if ($form->image_url)
-                        {{-- Imagen recién seleccionada pendiente de subir/guardar --}}
                         <div
                             class="relative overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50 p-2.5 dark:border-zinc-700 dark:bg-zinc-800/50">
                             <span
@@ -270,7 +249,6 @@
                             </div>
                         </div>
                     @elseif ($product->image_url)
-                        {{-- Imagen existente guardada en almacenamiento --}}
                         <div
                             class="relative overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50 p-2.5 dark:border-zinc-700 dark:bg-zinc-800/50">
                             <div
@@ -288,7 +266,6 @@
                             </div>
                         </div>
                     @else
-                        {{-- Sin imagen --}}
                         <label for="image_url"
                             class="group relative flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-zinc-300 bg-zinc-50/80 px-4 py-7 text-center transition hover:border-blue-500 hover:bg-blue-50/40 dark:border-zinc-700 dark:bg-zinc-800/40 dark:hover:border-blue-400 dark:hover:bg-zinc-800/70">
 
@@ -310,8 +287,6 @@
 
                     <input id="image_url" type="file" accept="image/png,image/jpeg,image/webp"
                         wire:model="form.image_url" class="sr-only">
-
-                    <!-- Loading feedback -->
                     <div wire:loading wire:target="form.image_url"
                         class="mt-2 flex items-center gap-2 text-xs font-medium text-blue-600 dark:text-blue-400">
                         <flux:icon name="arrow-path" class="size-4 animate-spin" />
@@ -325,8 +300,6 @@
 
             </div>
         </div>
-
-        <!-- Botones de acción en la parte inferior de la página -->
         <div class="flex items-center justify-end gap-3 border-t border-zinc-200 pt-5 dark:border-zinc-800">
             <flux:button variant="ghost" href="{{ route('admin.products.index') }}">
                 Cancelar

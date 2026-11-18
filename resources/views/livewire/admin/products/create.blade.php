@@ -150,6 +150,13 @@
                             @enderror
                         </div>
                         <div>
+                            <flux:input type="text" label="SKU" placeholder="SKU"
+                                wire:model.live.debounce.500ms="form.sku" />
+                            @error('form.sku')
+                                <flux:text class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</flux:text>
+                            @enderror
+                        </div>
+                        <div>
                             <flux:input type="number" min="0" label="Stock en almacén" placeholder="0"
                                 wire:model="form.stock" />
                             @error('form.stock')

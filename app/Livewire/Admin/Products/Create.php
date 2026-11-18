@@ -42,4 +42,9 @@ class Create extends Component
         $this->form->reset();
         $this->dispatch('product-created', message: 'Producto creado exitosamente');
     }
+
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
 }

@@ -7,10 +7,13 @@ use Livewire\Attributes\Layout;
 use App\Models\Product;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('components.layouts.marketplace-layout')]
 class Index extends Component
 {
+
+    use WithPagination;
 
     public $search = '';
     public $cats = [];
@@ -74,7 +77,6 @@ class Index extends Component
             ];
         }
 
-
         session()->put('cart', $cart);
         session()->save();
         // dd([
@@ -85,6 +87,10 @@ class Index extends Component
         // ]);
 
         session()->flash('success', 'Producto agregado al carrito.');
+        $this->dispatch(
+            'cart-updated',
+            cartCount: collect($cart)->sum('quantity')
+        );
     }
 
     public function clearFilters()

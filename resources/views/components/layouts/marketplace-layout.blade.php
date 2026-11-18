@@ -20,8 +20,8 @@
 
 <body
     class="min-h-screen flex flex-col bg-zinc-50 font-sans text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100">
-    <div
-        class="bg-gradient-to-r from-blue-700 via-indigo-600 to-blue-600 px-4 py-2 text-center text-xs font-medium text-white shadow-sm">
+    <div class="bg-gradient-to-r from-blue-700 via-indigo-600 to-blue-600 px-4 py-2 text-center text-xs font-medium
+        text-white shadow-sm">
         <div class="mx-auto flex max-w-7xl items-center justify-between">
             <span class="hidden sm:inline">🚀 ¡Envíos gratis en pedidos seleccionados hoy!</span>
             <span class="mx-auto sm:mx-0">Atención al cliente 24/7 &bull; Compras 100% protegidas</span>
@@ -71,36 +71,38 @@
                     </button>
                 </div>
             </form>
-            <div class="flex items-center gap-2 sm:gap-4">
+            <div x-data="{ cartCount: {{ collect(session('cart', []))->sum('quantity') }} }"
+                x-on:cart-updated.window="cartCount = $event.detail.cartCount" class="flex items-center gap-2 sm:gap-4">
                 <div x-data x-model="$flux.appearance">
-                        <flux:dropdown position="bottom" align="start">
-                            <flux:button icon="sun" variant="subtle" aria-label="Cambiar tema" />
+                    <flux:dropdown position="bottom" align="start">
+                        <flux:button icon="sun" variant="subtle" aria-label="Cambiar tema" />
 
-                            <flux:menu>
-                                <flux:menu.item x-on:click="$flux.appearance = 'light'">
-                                    Claro
-                                </flux:menu.item>
+                        <flux:menu>
+                            <flux:menu.item x-on:click="$flux.appearance = 'light'">
+                                Claro
+                            </flux:menu.item>
 
-                                <flux:menu.item x-on:click="$flux.appearance = 'dark'">
-                                    Oscuro
-                                </flux:menu.item>
+                            <flux:menu.item x-on:click="$flux.appearance = 'dark'">
+                                Oscuro
+                            </flux:menu.item>
 
-                                <flux:menu.item x-on:click="$flux.appearance = 'system'">
-                                    Usar sistema
-                                </flux:menu.item>
-                            </flux:menu>
-                        </flux:dropdown>
-                    </div>
+                            <flux:menu.item x-on:click="$flux.appearance = 'system'">
+                                Usar sistema
+                            </flux:menu.item>
+                        </flux:menu>
+                    </flux:dropdown>
+                </div>
                 @auth
 
-                    <button type="button" aria-label="Carrito de compras"
+                    <button type="button" aria-label="Carrito de compras" wire:navigate href="{{ route('cart.checkout') }}"
                         class="relative rounded-full p-2 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white transition">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
                                 d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                         </svg>
                         <span
-                            class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white">0</span>
+                            class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white">
+                            <span x-text="cartCount"></span></span>
                     </button>
                     <div class="hidden h-5 w-px bg-zinc-200 dark:bg-zinc-700 sm:block"></div>
                     {{-- <div x-data x-model="$flux.appearance">
@@ -187,7 +189,8 @@
                         @endif
                     </div>
                     <p class="mt-3 text-sm text-zinc-500 dark:text-zinc-400 max-w-sm">
-                        Tu destino preferido para descubrir, comprar y vender productos de calidad garantizada al mejor
+                        Tu destino preferido para descubrir, comprar y vender productos de calidad garantizada al
+                        mejor
                         precio del mercado.
                     </p>
                     <div class="mt-4 flex gap-3 text-zinc-400">
@@ -210,7 +213,8 @@
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-white">Vender</h3>
+                    <h3 class="text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-white">Vender
+                    </h3>
                     <ul class="mt-3 space-y-2 text-xs">
                         <li><a href="#" class="hover:text-blue-600 dark:hover:text-blue-400 transition">Vende tus
                                 productos</a></li>

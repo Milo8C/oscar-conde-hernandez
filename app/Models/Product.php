@@ -23,6 +23,7 @@ class Product extends Model
         'is_active',
         'stock',
         'slug',
+        'sku'
     ];
 
     protected static function booted(): void

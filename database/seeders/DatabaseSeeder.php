@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin User',
             'email' => 'admin@ecommerce.test',
             'password' => bcrypt('demo2089'),
-            'verified_at' => now(),
+            'email_verified_at' => now(),
         ]);
 
         $admin->assignRole('Administrador');

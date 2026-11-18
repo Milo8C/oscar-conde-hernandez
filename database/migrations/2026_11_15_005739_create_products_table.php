@@ -23,7 +23,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->integer('stock')->default(0);
             $table->string('image_url')->nullable();
-            $table->string('sku')->nullable();
+            $table->string('sku')->unique();
             $table->string('slug')->unique();
             $table->softDeletes();
             $table->timestamps();

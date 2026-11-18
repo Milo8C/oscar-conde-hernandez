@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Cart;
 
+use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
@@ -9,13 +11,17 @@ use Livewire\Attributes\Layout;
 #[Layout('components.layouts.marketplace-layout')]
 class Success extends Component
 {
+
+    public Order $order;
+    public function mount(Order $order)
+    {
+        $this->order = $order;
+        session()->forget('cart');
+    }
     public function render()
     {
-        $products = Product::whereIn('id', array_keys(session('cart', [])))->get();
-        session()->forget('cart');
-
         return view('livewire.cart.success', [
-            'products' => $products,
+            'order' => $this->order->load('details.product'),
         ]);
     }
 }

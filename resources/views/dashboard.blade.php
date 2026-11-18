@@ -11,11 +11,11 @@
     <div class="space-y-6">
         <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             @foreach ([
-                ['label' => 'Ventas de hoy', 'value' => '$0.00', 'detail' => 'Sin ventas registradas'],
-                ['label' => 'Pedidos', 'value' => '0', 'detail' => 'Pendientes de atención'],
-                ['label' => 'Productos', 'value' => '0', 'detail' => 'En el catálogo'],
-                ['label' => 'Clientes', 'value' => '1', 'detail' => 'Cuenta de administrador'],
-            ] as $stat)
+                    ['label' => 'Ventas de hoy', 'value' => '$0.00', 'detail' => 'Sin ventas registradas'],
+                    ['label' => 'Pedidos', 'value' => '0', 'detail' => 'Pendientes de atención'],
+                    ['label' => 'Productos', 'value' => '0', 'detail' => 'En el catálogo'],
+                    ['label' => 'Clientes', 'value' => '1', 'detail' => 'Cuenta de administrador'],
+                ] as $stat)
                 <div class="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
                     <p class="text-sm font-medium text-zinc-500 dark:text-zinc-400">
                         {{ $stat['label'] }}
@@ -31,7 +31,8 @@
         </div>
 
         <div class="grid gap-6 xl:grid-cols-3">
-            <section class="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-900 xl:col-span-2">
+            <section
+                class="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-900 xl:col-span-2">
                 <div class="flex items-center justify-between">
                     <div>
                         <h2 class="text-base font-semibold text-zinc-900 dark:text-white">
@@ -41,12 +42,14 @@
                             Aquí aparecerán los movimientos de tu tienda.
                         </p>
                     </div>
-                    <span class="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                    <span
+                        class="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                         Próximamente
                     </span>
                 </div>
 
-                <div class="mt-6 rounded-lg border border-dashed border-zinc-300 px-4 py-10 text-center dark:border-zinc-700">
+                <div
+                    class="mt-6 rounded-lg border border-dashed border-zinc-300 px-4 py-10 text-center dark:border-zinc-700">
                     <p class="font-medium text-zinc-700 dark:text-zinc-300">
                         Todavía no hay actividad
                     </p>
@@ -56,28 +59,35 @@
                 </div>
             </section>
 
-            <section class="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+            <section
+                class="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
                 <h2 class="text-base font-semibold text-zinc-900 dark:text-white">
                     Accesos rápidos
                 </h2>
 
                 <div class="mt-4 space-y-3">
-                    <a href="#" class="block rounded-lg border border-zinc-200 p-4 transition hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800">
+                    <a href="#"
+                        class="block rounded-lg border border-zinc-200 p-4 transition hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800">
                         <span class="font-medium text-zinc-900 dark:text-white">Crear producto</span>
-                        <span class="mt-1 block text-sm text-zinc-500 dark:text-zinc-400">Agregar un artículo al catálogo</span>
+                        <span class="mt-1 block text-sm text-zinc-500 dark:text-zinc-400">Agregar un artículo al
+                            catálogo</span>
                     </a>
 
-                    <a href="#" class="block rounded-lg border border-zinc-200 p-4 transition hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800">
+                    <a href="#"
+                        class="block rounded-lg border border-zinc-200 p-4 transition hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800">
                         <span class="font-medium text-zinc-900 dark:text-white">Ver pedidos</span>
-                        <span class="mt-1 block text-sm text-zinc-500 dark:text-zinc-400">Revisar compras recientes</span>
+                        <span class="mt-1 block text-sm text-zinc-500 dark:text-zinc-400">Revisar compras
+                            recientes</span>
                     </a>
 
-                    <a href="{{ route('profile') }}" class="block rounded-lg border border-zinc-200 p-4 transition hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800">
+                    <a href="{{ route('profile') }}"
+                        class="block rounded-lg border border-zinc-200 p-4 transition hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800">
                         <span class="font-medium text-zinc-900 dark:text-white">Mi perfil</span>
                         <span class="mt-1 block text-sm text-zinc-500 dark:text-zinc-400">Actualizar tus datos</span>
                     </a>
                 </div>
             </section>
         </div>
+
     </div>
 </x-app-layout>

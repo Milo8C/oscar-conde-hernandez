@@ -9,7 +9,9 @@ class ProductForm extends Form
 {
 
     //
-    #[Validate('required|string|max:255')]
+    #[Validate('required|string|regex:/^[a-zA-Z0-9\s]+$/|max:255', message: [
+        'regex' => 'El nombre no debe contener acentos ni caracteres especiales.',
+    ])]
     public string $name = '';
 
     #[Validate('required|string|max:255')]
@@ -38,4 +40,6 @@ class ProductForm extends Form
 
     #[Validate('required|exists:categories,id')]
     public ?int $category_id = null;
+    #[Validate('required|unique:products,sku|max:50|string|regex:/^[a-zA-Z0-9\s]+$/')]
+    public string $sku = '';
 }

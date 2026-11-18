@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Cart;
 
+use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Product;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -43,7 +45,7 @@ class Checkout extends Component
         $cart = session()->get('cart', []);
         unset($cart[$productId]);
         session()->put('cart', $cart);
-        $this->dispatch('cart-updated');
+        $this->dispatch('cart-updated', message: 'Producto eliminado del carrito', type: 'success', cartCount: collect($cart)->sum('quantity'));
     }
 
     public function decreaseQuantity(int $productId)
@@ -56,8 +58,7 @@ class Checkout extends Component
                 unset($cart[$productId]);
             }
             session()->put('cart', $cart);
-            session()->flash('message', 'Producto actualizado en el carrito');
-            $this->dispatch('cart-updated');
+            $this->dispatch('cart-updated', message: 'Producto actualizado en el carrito', type: 'success', cartCount: collect($cart)->sum('quantity'));
         }
     }
 
@@ -67,14 +68,14 @@ class Checkout extends Component
         if (isset($cart[$productId])) {
             $cart[$productId]['quantity']++;
             session()->put('cart', $cart);
-            $this->dispatch('cart-updated');
+            $this->dispatch('cart-updated', message: 'Producto actualizado en el carrito', type: 'success', cartCount: collect($cart)->sum('quantity'));
         }
     }
 
     public function clearCart()
     {
         session()->forget('cart');
-        $this->dispatch('cart-updated');
+        $this->dispatch('cart-updated', message: 'Carrito vaciado', type: 'success', cartCount: 0);
     }
 
     public function pay()
@@ -82,11 +83,18 @@ class Checkout extends Component
 
         $cart = session()->get('cart', []);
         if (empty($cart)) {
-            session()->flash('error', 'El carrito está vacío.');
+            $this->dispatch('cart-updated', message: 'El carrito está vacío.', type: 'error', cartCount: 0);
             return;
         }
 
-        $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
+        $secret = config('services.stripe.secret');
+
+        if (empty($secret)) {
+            $this->dispatch('cart-updated', message: 'Stripe secret no configurado.', type: 'error');
+            return;
+        }
+        $stripe = new \Stripe\StripeClient($secret);
+
 
         $lineItems = [];
         $products = Product::whereIn('id', array_keys($cart))->get();
@@ -103,11 +111,54 @@ class Checkout extends Component
             ];
         }
 
+        $products = Product::whereIn('id', array_keys(session('cart', [])))->get();
+        $cart = session('cart', []);
 
-        $session = $stripe->checkout->sessions->create([            
+        $total = 0;
+        foreach ($products as $product) {
+            $total += $product->price_mx * $cart[$product->id]['quantity'];
+        }
+        $iva = $total * 0.16;
+        $subtotal = $total - $iva;
+
+        $existingOrder = Order::where('customer_id', auth()->user()->customer->id)
+            ->where('status', 'pendiente')
+            ->latest()
+            ->first();
+
+        if ($existingOrder) {
+            $existingOrder->update(['status' => 'cancelado']);
+        }
+
+        $order = Order::create([
+            'customer_id' => auth()->user()->customer->id,
+            'order_code' => Order::generateOrderCode(),
+            'subtotal' => $subtotal,
+            'total' => $total,
+            'iva' => $iva,
+            'status' => 'pendiente',
+            'paid_at' => null
+        ]);
+
+        foreach ($products as $product) {
+            OrderDetail::create([
+                'order_id' => $order->id,
+                'product_id' => $product->id,
+                'quantity' => $cart[$product->id]['quantity'],
+                'price_mxn' => $product->price_mx,
+                'price_usd' => $product->price_usd,
+            ]);
+        }
+
+
+        $session = $stripe->checkout->sessions->create([
             'line_items' => $lineItems,
             'mode' => 'payment',
-            'success_url' => route('cart.success'),
+            'metadata' => [
+                'customer_id' => auth()->user()->customer->id,
+                'order_id' => $order->id,
+            ],
+            'success_url' => route('cart.success', $order),
             'cancel_url' => route('cart.checkout'),
         ]);
 

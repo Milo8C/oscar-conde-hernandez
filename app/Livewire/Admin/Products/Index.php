@@ -13,7 +13,7 @@ use Livewire\WithPagination;
 class Index extends Component
 {
     #
-    public $search = '';    
+    public $search = '';
     public $category_id = '';
 
     use WithPagination;
@@ -31,7 +31,7 @@ class Index extends Component
             $query->where('name', 'like', "%{$this->search}%");
         })->when($this->category_id, function ($query) {
             $query->where('category_id', $this->category_id);
-        })->latest()->paginate(10);        
+        })->latest()->paginate(10);
 
         return view('livewire.admin.products.index', [
             'products' => $products,
@@ -41,18 +41,18 @@ class Index extends Component
 
     public function delete(int $product)
     {
-        $this->authorize('delete', Product::class);
-
         $product = Product::find($product);
+        $this->authorize('delete', $product);
+
         $product->delete();
         $this->dispatch('product-deleted');
     }
 
     function toggleActive(int $product)
-    {       
-        $this->authorize('update', Product::class);
-
+    {
         $product = Product::find($product);
+        $this->authorize('update', $product);
+
         $product->is_active = !$product->is_active;
         $product->save();
         $this->dispatch('product-updated');
@@ -65,6 +65,4 @@ class Index extends Component
 
     #[On('product-created')]
     public function refreshProducts() {}
-
-
 }
