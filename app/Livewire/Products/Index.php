@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Products;
 
+use App\Livewire\Concerns\HasAddCart;
 use App\Models\Category;
 use Livewire\Attributes\Layout;
 use App\Models\Product;
@@ -13,7 +14,7 @@ use Livewire\WithPagination;
 class Index extends Component
 {
 
-    use WithPagination;
+    use WithPagination, HasAddCart;
 
     public $search = '';
     public $cats = [];
@@ -29,7 +30,7 @@ class Index extends Component
 
         $products = Product::where('is_active', true)
             ->where(function ($query) {
-                $query->whereDate('validity_at', '>', now()->toDateString())
+                $query->whereDate('validity_at', '>=', now()->toDateString())
                     ->orWhereNull('validity_at');
             })
             ->where(function ($query) {
@@ -55,43 +56,7 @@ class Index extends Component
 
     public function updatedSearch() {}
 
-    public function addToCart(int $productId)
-    {
-        $product = Product::find($productId);
 
-        if (!$product) {
-            session()->flash('error', 'Producto no encontrado.');
-            return;
-        }
-        $oldCart = session()->get('cart', []);
-
-        $cart = session()->get('cart', []);
-
-        if (isset($cart[$productId])) {
-            $cart[$productId]['quantity']++;
-        } else {
-            $cart[$productId] = [
-                'name' => $product->name,
-                'price' => $product->price_mx,
-                'quantity' => 1,
-            ];
-        }
-
-        session()->put('cart', $cart);
-        session()->save();
-        // dd([
-        //     'productId recibido' => $productId,
-        //     'claves despues' => array_keys($cart),
-        //     'claves antes' => array_keys($oldCart),
-        //     'cantidad antes' => $cart[$productId]['quantity'] ?? null,
-        // ]);
-
-        session()->flash('success', 'Producto agregado al carrito.');
-        $this->dispatch(
-            'cart-updated',
-            cartCount: collect($cart)->sum('quantity')
-        );
-    }
 
     public function clearFilters()
     {

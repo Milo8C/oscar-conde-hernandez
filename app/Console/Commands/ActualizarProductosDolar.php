@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Services\BanxicoService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use App\Jobs\ActualizarPreciosDolar;
+
 
 class ActualizarProductosDolar extends Command
 {
@@ -27,7 +29,6 @@ class ActualizarProductosDolar extends Command
     {
         $datos = $banxicoService->obtenerTipoCambioActual();
         $tipoCambioHoy = (float) ($datos['datos'][0]['dato'] ?? 0);
-
         if ($tipoCambioHoy <= 0) {
             return Command::FAILURE;
         }
@@ -40,12 +41,11 @@ class ActualizarProductosDolar extends Command
 
         Product::query()
             ->where('price_mx', '>', 0)
-            ->chunkById(200, function ($productos) use ($tipoCambioHoy) {
-                foreach ($productos as $producto) {
-                    $producto->updateQuietly([
-                        'price_usd' => round($producto->price_mx / $tipoCambioHoy, 2)
-                    ]);
-                }
+            ->chunkById(100, function ($productos) use ($tipoCambioHoy) {
+                ActualizarPreciosDolar::dispatch(
+                    $productos->pluck('id')->all(),
+                    $tipoCambioHoy
+                );
             });
 
         Cache::forever('banxico:ultimo_tipo_cambio', $tipoCambioHoy);

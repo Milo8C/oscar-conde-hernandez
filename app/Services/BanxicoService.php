@@ -40,12 +40,12 @@ class BanxicoService
         ];
     }
 
-    public function obtenerTipoCambioActual(): float
+    public function obtenerTipoCambioActual(): array
     {
         $response = Http::acceptJson()
             ->withHeaders(['Bmx-Token' => config('services.banxico.key')])
             ->get("https://www.banxico.org.mx/SieAPIRest/service/v1/series/SF43718/datos/oportuno");
         $response->throw();
-        return (float) ($response->json('bmx.series.0.datos.0.dato') ?? 0);
+        return $response->json('bmx.series.0') ?? [];
     }
 }

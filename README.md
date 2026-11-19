@@ -32,16 +32,19 @@ Copia el archivo de ejemplo y configura tus credenciales:
 ```bash
 cp .env.example .env
 ```
+
 ---
 
 ### 2. Instalar dependencias de PHP (Composer)
 
-**En Windows:** 
+**En Windows:**
+
 ```bash
 composer update --ignore-platform-reqs
 ```
 
 **En Linux / macOS:**
+
 ```bash
 composer update
 ```
@@ -85,11 +88,13 @@ php artisan db:seed --class=DatabaseSeeder
 Para procesar conversiones de divisas y tareas en segundo plano:
 
 **En Windows:**
+
 ```bash
 php artisan queue:work
 ```
 
 **En Linux / macOS:**
+
 ```bash
 php artisan horizon
 # o: php artisan queue:work
@@ -102,6 +107,7 @@ php artisan horizon
 Para la actualización automática de precios en dólares según Banxico:
 
 - **En desarrollo local:**
+
   ```bash
   php artisan schedule:work
   ```
@@ -114,11 +120,39 @@ Para la actualización automática de precios en dólares según Banxico:
 
 ---
 
+### 8. Pruebas de Correo Electrónico (Mailpit)
+
+Para capturar y visualizar los correos electrónicos generados por la aplicación en un entorno local:
+
+#### Instalación
+
+- **macOS (Homebrew):**
+
+  ```bash
+  brew install mailpit
+  ```
+
+- **Windows (Scoop):**
+  ```bash
+  scoop install mailpit
+  ```
+
+#### Ejecución
+
+- **Directo en terminal:**
+  ```bash
+  mailpit
+  ```
+
+#### Bandeja de entrada
+
+Abre tu navegador en:  
+👉 **[http://localhost:8025](http://localhost:8025)** para ver todos los correos entrantes en tiempo real.
+
+---
+
 ## 👤 Credenciales de Acceso
 
-| Rol | Correo Electrónico | Contraseña |
-| :--- | :--- | :--- |
+| Rol               | Correo Electrónico     | Contraseña |
+| :---------------- | :--------------------- | :--------- |
 | **Administrador** | `admin@ecommerce.test` | `demo2089` |
-
-
-

@@ -2,7 +2,7 @@
     @product-created.window="createOpen = false; flashMessage = $event.detail.message; setTimeout(() => flashMessage = '', 3500)"
     @product-deleted.window="flashMessage = 'Producto eliminado con éxito'; setTimeout(() => flashMessage = '', 3500)"
     class="space-y-6">
-    
+
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <div class="flex items-center gap-3">
@@ -30,8 +30,10 @@
     </div>
     <div
         class="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
-        <div class="flex items-center justify-between border-b border-zinc-200 bg-zinc-50 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
-            <flux:input  wire:model.live.debounce.500ms="search" type="search" placeholder="Buscar producto..." icon="magnifying-glass"
+        <div
+            class="flex items-center justify-between border-b border-zinc-200 bg-zinc-50 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
+            <flux:input wire:model.live.debounce.500ms="search" type="search" placeholder="Buscar producto..."
+                icon="magnifying-glass"
                 class="max-w-md rounded-t-xl bg-zinc-50 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-primary-500 focus:ring-primary-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-500" />
             <flux:select wire:model.live="category_id" placeholder="Filtrar por categoría" icon="tag"
                 class="max-w-xs rounded-t-xl bg-zinc-50 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-primary-500 focus:ring-primary-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-500">
@@ -41,11 +43,11 @@
                 @endforeach
             </flux:select>
         </div>
-        
+
         <flux:table :paginate="$products" class="px-2">
             <flux:table.columns class="">
                 <flux:table.column class="w-80 mx-2 "> Producto</flux:table.column>
-                <flux:table.column>Descripción</flux:table.column>
+                <flux:table.column class="w-96">Descripción</flux:table.column>
                 <flux:table.column class="w-32">Stock</flux:table.column>
                 <flux:table.column class="w-36">Precio (MXN)</flux:table.column>
                 <flux:table.column class="w-28">Estado</flux:table.column>
@@ -80,14 +82,14 @@
                                 </div>
                             </div>
                         </flux:table.cell>
-                        
+
                         <flux:table.cell>
                             <span class="line-clamp-2 text-xs text-zinc-600 dark:text-zinc-400"
                                 title="{{ $product->description_short }}">
                                 {{ $product->description_short ?: '—' }}
                             </span>
                         </flux:table.cell>
-                        
+
                         <flux:table.cell>
                             @if ($product->stock === 0)
                                 <span
@@ -122,7 +124,7 @@
                                 @endif
                             </div>
                         </flux:table.cell>
-                        
+
                         <flux:table.cell>
                             @if ($product->is_active)
                                 <span
@@ -138,7 +140,7 @@
                                 </span>
                             @endif
                         </flux:table.cell>
-                        
+
                         <flux:table.cell class="">
                             <div class="flex items-center justify-end gap-1">
                                 <flux:button variant="ghost" size="sm"
@@ -181,7 +183,7 @@
             </flux:table.rows>
         </flux:table>
     </div>
-    
+
     <div x-show="createOpen" x-cloak x-transition:enter="transition ease-out duration-200"
         x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
         x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"

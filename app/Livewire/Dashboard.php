@@ -16,6 +16,7 @@ class Dashboard extends Component
     {
         $user = auth()->user();
         $stats = [];
+        $actRecientes = [];
         if ($user->hasRole('Administrador')) {
 
             $pedidos = Order::count();
@@ -29,6 +30,40 @@ class Dashboard extends Component
                 ['label' => 'Productos', 'value' => $productos, 'detail' => 'En el catálogo'],
                 ['label' => 'Clientes', 'value' => $clientes, 'detail' => 'Cuenta de administrador'],
             ];
+
+            $orderRecientes = Order::with('customer')
+                ->whereDate('created_at', Carbon::today())
+                ->orderBy('created_at', 'desc')
+                ->limit(3)
+                ->get();
+
+            $productosRecientes = Product::with('category')
+                ->orderBy('created_at', 'desc')
+                ->limit(3)
+                ->get();
+
+            $actRecientes = [];
+            foreach ($orderRecientes as $order) {
+                $actRecientes[] = [
+                    'type' => 'order',
+                    'name' => $order->customer->user->name,
+                    'action' => 'Nuevo pedido',
+                    'time' => $order->created_at->diffForHumans()
+                ];
+            }
+            foreach ($productosRecientes as $producto) {
+                $actRecientes[] = [
+                    'type' => 'product',
+                    'name' => $producto->name,
+                    'action' => 'Nuevo producto',
+                    'time' => $producto->created_at->diffForHumans()
+                ];
+            }
+
+            $actRecientes = collect($actRecientes)
+                ->sortByDesc('time')
+                ->values()
+                ->take(5);
         } else {
             $ventasHoy = $user->customer->orders()->whereDate('created_at', Carbon::today())->sum('total');
             $totalPedidos = $user->customer->orders()->count();
@@ -46,7 +81,8 @@ class Dashboard extends Component
             ];
         }
         return view('livewire.dashboard', [
-            'stats' => $stats
+            'stats' => $stats,
+            'actRecientes' => $actRecientes
         ]);
     }
 }

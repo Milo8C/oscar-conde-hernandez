@@ -1,4 +1,4 @@
-<div class="space-y-6">    
+<div class="space-y-6">
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <div class="flex items-center gap-3">
@@ -13,21 +13,23 @@
             <flux:text class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
                 {{ auth()->user()->hasRole('admin') ? 'Gestiona el inventario, precios y disponibilidad de tu catálogo.' : 'Aquí puedes ver tus pedidos.' }}
             </flux:text>
-        </div>        
+        </div>
     </div>
     <div
         class="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-800 dark:bg-zinc-900 pb-4">
-        <div class="flex items-center justify-between border-b border-zinc-200 bg-zinc-50 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
-            <flux:input  wire:model.live.debounce.500ms="search" type="search" placeholder="Buscar pedido..." icon="magnifying-glass"
+        <div
+            class="flex items-center justify-between border-b border-zinc-200 bg-zinc-50 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
+            <flux:input wire:model.live.debounce.500ms="search" type="search" placeholder="Buscar pedido..."
+                icon="magnifying-glass"
                 class="max-w-md rounded-t-xl bg-zinc-50 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-primary-500 focus:ring-primary-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-500" />
 
-                <div class="flex items-center gap-2">
-                    <flux:input wire:model.live.debounce.500ms="date_from" type="date"
-                        class="max-w-md rounded-t-xl bg-zinc-50 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-primary-500 focus:ring-primary-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-500" />
-                    <flux:input wire:model.live.debounce.500ms="date_to" type="date"
-                        class="max-w-md rounded-t-xl bg-zinc-50 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-primary-500 focus:ring-primary-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-500" />
-                </div>
-        </div>        
+            <div class="flex items-center gap-2">
+                <flux:input wire:key="filter-date-from" wire:model.live="date_from" type="date"
+                    class="w-48 rounded-t-xl bg-zinc-50 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-primary-500 focus:ring-primary-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-500" />
+                <flux:input wire:key="filter-date-to" wire:model.live="date_to" type="date"
+                    class="w-48 rounded-t-xl bg-zinc-50 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-primary-500 focus:ring-primary-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-500" />
+            </div>
+        </div>
         <flux:table :paginate="$orders" class="px-5">
             <flux:table.columns class="">
                 <flux:table.column class="w-80 mx-2 "> Pedido</flux:table.column>
@@ -37,39 +39,39 @@
                 <flux:table.column>Total</flux:table.column>
                 <flux:table.column class="w-32">Fecha</flux:table.column>
                 <flux:table.column class="w-36">Numero de productos</flux:table.column>
-                <flux:table.column class="w-28">Estado</flux:table.column>      
-                <flux:table.column class="w-28">Acciones</flux:table.column>            
+                <flux:table.column class="w-28">Estado</flux:table.column>
+                <flux:table.column class="w-28">Acciones</flux:table.column>
             </flux:table.columns>
 
             <flux:table.rows>
                 @forelse ($orders as $order)
                     <flux:table.row :key="$order->id"
-                        class="transition-colors hover:bg-zinc-50/60 dark:hover:bg-zinc-800/40">                        
+                        class="transition-colors hover:bg-zinc-50/60 dark:hover:bg-zinc-800/40">
                         <flux:table.cell>
                             {{ $order->order_code }}
-                        </flux:table.cell> 
-                        @if(auth()->user()->hasRole('Administrador'))    
-                        <flux:table.cell>  
-                            {{ $order->customer->user->name }}
-                        </flux:table.cell>  
-                        @endif   
+                        </flux:table.cell>
+                        @if(auth()->user()->hasRole('Administrador'))
+                            <flux:table.cell>
+                                {{ $order->customer->user->name }}
+                            </flux:table.cell>
+                        @endif
                         <flux:table.cell>
                             {{ $order->total }}
                         </flux:table.cell>
-                        
+
                         <flux:table.cell>
-                           {{ $order->created_at }}
+                            {{ $order->created_at }}
                         </flux:table.cell>
 
                         <flux:table.cell>
                             <div>
-                                {{ count($order->details) }}  
+                                {{ count($order->details) }}
                             </div>
                         </flux:table.cell>
-                        
+
                         <flux:table.cell>
-                           @if ($order->status == 'cancelado')
-                               <span
+                            @if ($order->status == 'cancelado')
+                                <span
                                     class="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2 py-0.5 text-xs font-semibold text-red-700 dark:bg-red-950/60 dark:text-red-400">
                                     <span class="size-1.5 rounded-full bg-red-500"></span>
                                     Cancelado
@@ -86,19 +88,20 @@
                                     <span class="size-1.5 rounded-full bg-emerald-500"></span>
                                     Pagado
                                 </span>
-                               @elseif($order->status == 'fallido')
-                               <span
+                            @elseif($order->status == 'fallido')
+                                <span
                                     class="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2 py-0.5 text-xs font-semibold text-red-700 dark:bg-red-950/60 dark:text-red-400">
                                     <span class="size-1.5 rounded-full bg-red-500"></span>
                                     Pago Fallido
-                                </span> 
-                            @endif  
-                        </flux:table.cell>     
+                                </span>
+                            @endif
+                        </flux:table.cell>
                         <flux:table.cell>
-                            <flux:button href="{{ route('orders.show', $order->slug) }}" wire:navigate variant="outline" size="sm">
+                            <flux:button href="{{ route('orders.show', $order->slug) }}" wire:navigate variant="outline"
+                                size="sm">
                                 <flux:icon name="eye" class="size-4" />
-                            </flux:button>                           
-                        </flux:table.cell>                                        
+                            </flux:button>
+                        </flux:table.cell>
                     </flux:table.row>
                 @empty
                     <flux:table.row>
@@ -116,6 +119,6 @@
                 @endforelse
             </flux:table.rows>
         </flux:table>
-    </div>    
-    
+    </div>
+
 </div>

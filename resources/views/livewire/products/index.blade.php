@@ -116,7 +116,7 @@
                                         </flux:button>
                                     @else
                                         <div class="flex items-center gap-2 bg-red-800 w-full text-white py-2 shadow-xs rounded-lg justify-center">
-                                            <flux:icon name="shopping-cart" /> <span> Sin Stock</span>
+                                            <flux:icon name="shopping-cart" /> <span> Agotado</span>
                                         </div>
                                     @endif
                                 @else

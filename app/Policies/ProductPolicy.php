@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Auth\Access\Response;
 
 class ProductPolicy
@@ -19,24 +20,19 @@ class ProductPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Product $product): bool
+    public function view(?User $user, Product $product): bool
     {
-        if ($user->hasRole('Administrador')) {
+        if ($user && $user->hasRole('Administrador')) {
             return true;
         }
         if (! $product->is_active) {
             return false;
         }
-
-        if ($product->validity_at && $product->validity_at->isFuture()) {
+        if ($product->validity_at && Carbon::parse($product->validity_at)->isPast()) {
             return false;
         }
 
-        if ($product->stock <= 0) {
-            return false;
-        }
-
-        return false;
+        return true;
     }
 
     /**

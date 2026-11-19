@@ -42,4 +42,5 @@ return [
     'banxico' => [
         'key' => env('BANXICO_API_KEY'),
     ],
+    'iva' => env('IVA', 0.16),
 ];

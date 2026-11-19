@@ -73,7 +73,7 @@ class Edit extends Form
         $this->description_long = $product->description_long;
         $this->is_active = (bool) $product->is_active;
         $this->category_id = $product->category_id;
-        $this->sku = $product->sku;
+        $this->sku = $product->sku ? $product->sku : '';
         $this->validity_at = $product->validity_at ? date('Y-m-d\TH:i', strtotime($product->validity_at)) : null;
     }
 }

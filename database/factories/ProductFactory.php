@@ -20,7 +20,7 @@ class ProductFactory extends Factory
     {
         $name = $this->faker->sentence(3);
         $price_mx = $this->faker->randomFloat(2, 10, 1000);
-        $price_us = $price_mx * 18.6;
+        $price_us = $price_mx / 18.6;
 
         return [
             'name' => $name,
@@ -28,7 +28,8 @@ class ProductFactory extends Factory
             'category_id' => $this->faker->numberBetween(1, 8),
             'slug' => Str::slug($name),
             'description_short' => $this->faker->sentence(3),
-            'description_long' => $this->faker->paragraph(2),
+            'description_long' => $this->faker->paragraph(40),
+            'validity_at' => \Carbon\Carbon::now()->addMonths(1)->format('Y-m-d'),
             'price_mx' => $price_mx,
             'price_usd' => $price_us,
             'stock' => $this->faker->numberBetween(0, 100),

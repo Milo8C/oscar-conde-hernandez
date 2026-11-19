@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\User;
+use App\Notifications\OrderPaySuccessNotification;
 use Illuminate\Http\Request;
 
 class StripeWebhookController extends Controller
@@ -48,6 +50,9 @@ class StripeWebhookController extends Controller
                             }
                         }
                     }
+
+                    $user = $order->customer->user;
+                    $user->notify(new OrderPaySuccessNotification($order));
                 }
                 break;
 
@@ -63,12 +68,6 @@ class StripeWebhookController extends Controller
                             'status' => 'fallido',
                             'paid_at' => now(),
                         ]);
-
-                        foreach ($order->details as $detail) {
-                            if ($detail->product) {
-                                $detail->product->decrement('stock', $detail->quantity);
-                            }
-                        }
                     }
                 }
                 break;

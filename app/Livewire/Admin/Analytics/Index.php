@@ -43,7 +43,7 @@ class Index extends Component
             ->groupBy('product_id')
             ->orderByDesc('total_vendidos')
             ->with('product')
-            ->take(10)
+            ->take(3)
             ->get();
 
         return view('livewire.admin.analytics.index', [

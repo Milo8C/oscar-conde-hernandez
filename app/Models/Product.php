@@ -40,6 +40,7 @@ class Product extends Model
 
             $product->slug = $slug;
         });
+
         // static::updating(function (Product $product) {
         //     $base = Str::slug($product->name);
         //     $slug = $base;

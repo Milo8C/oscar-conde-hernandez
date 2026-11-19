@@ -15,17 +15,17 @@ class Checkout extends Component
     {
 
         $cart = session()->get('cart', []);
-        $products = \App\Models\Product::whereIn('id', array_keys($cart))->get();
+        $products = Product::whereIn('id', array_keys($cart))->get();
 
-        $total = array_reduce($products->toArray(), function ($carry, $product) use ($cart) {
-            return $carry + ($product['price_mx'] * $cart[$product['id']]['quantity']);
+        $total = array_reduce($products->toArray(), function ($sum, $product) use ($cart) {
+            return $sum + ($product['price_mx'] * $cart[$product['id']]['quantity']);
         }, 0);
 
-        $totalUSD = array_reduce($products->toArray(), function ($carry, $product) use ($cart) {
-            return $carry + ($product['price_usd'] * $cart[$product['id']]['quantity']);
+        $totalUSD = array_reduce($products->toArray(), function ($sum, $product) use ($cart) {
+            return $sum + ($product['price_usd'] * $cart[$product['id']]['quantity']);
         }, 0);
 
-        $iva = env('IVA', 0.16);
+        $iva = config('services.iva');
         $totalIva = $total * ($iva);
 
         $subtotal = $total - $totalIva;
@@ -66,6 +66,27 @@ class Checkout extends Component
 
     public function increaseQuantity(int $productId)
     {
+        $product = Product::find($productId);
+
+        if ($product->stock == 0) {
+            $this->dispatch('toast', type: 'error', message: 'Producto sin stock.');
+            return;
+        }
+
+        $cart = session()->get('cart', []);
+
+        $cantidadEnCarrito = $cart[$productId]['quantity'] ?? 0;
+        $nuevaCantidad = $cantidadEnCarrito + 1;
+
+        if ($nuevaCantidad > $product->stock) {
+            $this->dispatch(
+                'toast',
+                type: 'error',
+                message: "Solo hay {$product->stock} unidades disponibles de este producto."
+            );
+            return;
+        }
+
         $cart = session()->get('cart', []);
         if (isset($cart[$productId])) {
             $cart[$productId]['quantity']++;
