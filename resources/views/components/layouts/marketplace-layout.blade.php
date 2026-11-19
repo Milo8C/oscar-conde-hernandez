@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
 
-    @fluxAppearance
+    @fluxAppearance    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 
@@ -31,8 +31,8 @@
             </div>
         </div>
     </div>
-    <header
-        class="sticky top-0 z-40 border-b border-zinc-200/80 bg-white/95 backdrop-blur transition-colors dark:border-zinc-800 dark:bg-zinc-900/95">
+    <header 
+        class="sticky top-0 z-40 border-b border-zinc-200/80 bg-white/95 backdrop-blurdark:border-zinc-800 dark:bg-zinc-900/95">
         <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:gap-8 lg:px-8">
             <div class="flex items-center gap-3">
                 <a href="{{ route('welcome') }}" class="flex items-center gap-2 group transition" wire:navigate>

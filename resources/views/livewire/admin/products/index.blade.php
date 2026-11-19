@@ -57,8 +57,7 @@
             <flux:table.rows>
                 @forelse ($products as $product)
                     <flux:table.row :key="$product->id"
-                        class="transition-colors hover:bg-zinc-50/60 dark:hover:bg-zinc-800/40">
-                        <!-- Producto (Miniatura + Nombre) -->
+                        class="transition-colors hover:bg-zinc-50/60 dark:hover:bg-zinc-800/40">                        
                         <flux:table.cell>
                             <div class="flex items-center gap-3 px-2">
                                 @if ($product->image_url)

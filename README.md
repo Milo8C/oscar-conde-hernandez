@@ -51,10 +51,11 @@ composer update
 
 ---
 
-### 3. Generar la clave de la aplicación
+### 3. Generar la clave de la aplicación y acceso a storage
 
 ```bash
 php artisan key:generate
+php artisan storage:link
 ```
 
 ---
@@ -150,6 +151,23 @@ Abre tu navegador en:
 👉 **[http://localhost:8025](http://localhost:8025)** para ver todos los correos entrantes en tiempo real.
 
 ---
+
+### 9. Stripe **CLI:**
+
+- **macOS (Homebrew):**
+
+```bash
+brew install stripe/stripe-cli/stripe 
+```
+#### Hook de Pruebas
+
+En tu termina ejecuta Stripe session, copia el link en el navegador iniciar sesión y autorizar los webhook. 
+
+Ejecuta en tu terminal  ** stripe listen --forward-to localhost:8000/stripe/webhook --events checkout.session.completed,payment_intent.succeeded,payment_intent.payment_failed  ** copia el key generado, pegalos en tu env en tu variable STRIPE_WEBHOOK_SECRET, no cierres esa terminal.
+
+Ejecuta en otra terminal php artisan config:clear
+
+----
 
 ## 👤 Credenciales de Acceso
 
